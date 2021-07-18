@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TicTacToe
 {
@@ -6,9 +7,14 @@ namespace TicTacToe
     {
         public int[,] board = new int[Ct.BoardSize, Ct.BoardSize];
         int currentPlayer;
+        string player1, player2;
 
-        public void Start()
+        List<GameResult> gameResults = new List<GameResult>();
+
+        public void Start(string p1, string p2)
         {
+            player1 = p1;
+            player2 = p2;
             InitBoard();
             currentPlayer = Ct.FirstPlayer;
         }
@@ -79,6 +85,18 @@ namespace TicTacToe
         private void TogglePlayer()
         {
             currentPlayer = (currentPlayer == Ct.FirstPlayer) ? Ct.SecondPlayer : Ct.FirstPlayer;
+        }
+
+        internal string GetWinnerName()
+        {
+            return GetPlayerName(currentPlayer);
+        }
+
+        private string GetPlayerName(int currentPlayer)
+        {
+            if (currentPlayer == 1) return player1;
+            if (currentPlayer == 2) return player2;
+            return "No Winner";
         }
 
         private void InitBoard()

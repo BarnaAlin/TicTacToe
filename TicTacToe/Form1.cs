@@ -22,7 +22,7 @@ namespace TicTacToe
         private void mainForm_Load(object sender, EventArgs e)
         {
             game = new TicTacToeGame();
-            game.Start();
+            game.Start(player1TextBox.Text, player2TextBox.Text);
             InitBoard(gamePanel);
             ResizeBoard(gamePanel);
         }
@@ -67,8 +67,9 @@ namespace TicTacToe
 
             if (game.WeHaveAWinner(positionInBoard.x, positionInBoard.y))
             {
-                MessageBox.Show("We have a winner");
-                game.Start();
+
+                MessageBox.Show("We have a winner:" + game.GetWinnerName());
+                game.Start(player1TextBox.Text, player2TextBox.Text);
                 ResetBoard();
             }
         }
@@ -106,7 +107,7 @@ namespace TicTacToe
 
         private void resetGameButton_Click(object sender, EventArgs e)
         {
-            game.Start();
+            game.Start(player1TextBox.Text, player2TextBox.Text);
             ResetBoard();
         }
 
@@ -151,6 +152,16 @@ namespace TicTacToe
                System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
                 }
             }
+        }
+
+        private void resetGameButton_MouseEnter(object sender, EventArgs e)
+        {
+            resetGameButton.BackColor = Color.Yellow;
+        }
+
+        private void resetGameButton_MouseLeave(object sender, EventArgs e)
+        {
+            resetGameButton.BackColor = Color.LightGray;
         }
     }
 }
