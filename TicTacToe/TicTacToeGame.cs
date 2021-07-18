@@ -9,7 +9,7 @@ namespace TicTacToe
         int currentPlayer;
         string player1, player2;
 
-        List<GameResult> gameResults = new List<GameResult>();
+        public List<GameResult> gameResults = new List<GameResult>();
 
         public void Start(string p1, string p2)
         {
@@ -56,19 +56,6 @@ namespace TicTacToe
             return Ct.NoWinner;
         }
 
-        private void ConsoleShow()
-        {
-            Console.WriteLine("-------------------");
-            for (int i = 0; i < Ct.BoardSize; i++)
-            {
-                string t = "";
-                for (int j = 0; j < Ct.BoardSize; j++)
-                {
-                    t += board[i, j].ToString();
-                }
-                Console.WriteLine(t);
-            }
-        }
         public void Move(int x, int y)
         {
             if (board[x, y] == Ct.FreeCell)
@@ -87,6 +74,19 @@ namespace TicTacToe
             currentPlayer = (currentPlayer == Ct.FirstPlayer) ? Ct.SecondPlayer : Ct.FirstPlayer;
         }
 
+        internal void SaveGame()
+        {
+
+            gameResults.Add(
+                new GameResult
+                {
+                    Player1 = player1,
+                    Player2 = player2,
+                    Result = currentPlayer
+                }
+            );
+        }
+
         internal string GetWinnerName()
         {
             return GetPlayerName(currentPlayer);
@@ -97,6 +97,30 @@ namespace TicTacToe
             if (currentPlayer == 1) return player1;
             if (currentPlayer == 2) return player2;
             return "No Winner";
+        }
+
+        internal bool FullBoard()
+        {
+            for (int i = 0; i < Ct.BoardSize; i++)
+            {
+                for (int j = 0; j < Ct.BoardSize; j++)
+                {
+                    if (board[i, j] == 0) return false;
+                }
+            }
+            return true;
+        }
+
+        internal void SaveDrawGame()
+        {
+            gameResults.Add(
+             new GameResult
+             {
+                 Player1 = player1,
+                 Player2 = player2,
+                 Result = Ct.NoWinner
+             }
+         );
         }
 
         private void InitBoard()

@@ -65,13 +65,23 @@ namespace TicTacToe
 
             ChangeCell(positionInBoard.x, positionInBoard.y);
 
+            if (!game.WeHaveAWinner(positionInBoard.x, positionInBoard.y) && !game.FullBoard()) return;
+
             if (game.WeHaveAWinner(positionInBoard.x, positionInBoard.y))
             {
-
                 MessageBox.Show("We have a winner:" + game.GetWinnerName());
-                game.Start(player1TextBox.Text, player2TextBox.Text);
-                ResetBoard();
+                game.SaveGame();
             }
+            else if (game.FullBoard())
+            {
+                MessageBox.Show("Draw!");
+                game.SaveDrawGame();
+
+            }
+            resultsDataGridView.DataSource = null;
+            resultsDataGridView.DataSource = game.gameResults;
+            game.Start(player1TextBox.Text, player2TextBox.Text);
+            ResetBoard();
         }
 
         private void ResetBoard()
@@ -107,6 +117,9 @@ namespace TicTacToe
 
         private void resetGameButton_Click(object sender, EventArgs e)
         {
+            game.SaveDrawGame();
+            resultsDataGridView.DataSource = null;
+            resultsDataGridView.DataSource = game.gameResults;
             game.Start(player1TextBox.Text, player2TextBox.Text);
             ResetBoard();
         }
