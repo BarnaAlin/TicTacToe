@@ -24,10 +24,12 @@ namespace TicTacToe
             game = new TicTacToeGame();
             game.Start();
             InitBoard(gamePanel);
+            ResizeBoard(gamePanel);
         }
 
-        private void InitBoard(ScrollableControl t)
+        private void InitBoard(ScrollableControl gameZone)
         {
+            Ct.CellSize = (gameZone.Height - 2 * Ct.TopMargin - 2 * Ct.CellGap) / 3;
             for (int i = 0; i < Ct.BoardSize; i++)
             {
                 for (int j = 0; j < Ct.BoardSize; j++)
@@ -36,7 +38,7 @@ namespace TicTacToe
                     SetCellProperties(i, j);
                     board[i, j].MouseClick += ClickOnCell;
 
-                    t.Controls.Add(board[i, j]);
+                    gameZone.Controls.Add(board[i, j]);
 
                 }
             }
@@ -106,6 +108,49 @@ namespace TicTacToe
         {
             game.Start();
             ResetBoard();
+        }
+
+        private void gamePanel_SizeChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void mainForm_ResizeEnd(object sender, EventArgs e)
+        {
+            gamePanel.Refresh();
+        }
+
+        private void gameOptionsSplitContainer_Panel2_Resize(object sender, EventArgs e)
+        {
+            int minSize = Math.Min(gameOptionsSplitContainer.Panel2.Height, gameOptionsSplitContainer.Panel2.Width);
+
+            gamePanel.Left = 10;
+            gamePanel.Top = 10;
+
+            gamePanel.Height = minSize - 2 * Ct.TopMargin;
+            gamePanel.Width = minSize - 2 * Ct.LeftMargin;
+        }
+
+        private void gamePanel_Paint(object sender, PaintEventArgs e)
+        {
+            ResizeBoard(gamePanel);
+        }
+
+        private void ResizeBoard(Panel gameZone)
+        {
+            Ct.CellSize = (gameZone.Height - 2 * Ct.TopMargin - 2 * Ct.CellGap) / 3;
+            for (int i = 0; i < Ct.BoardSize; i++)
+            {
+                for (int j = 0; j < Ct.BoardSize; j++)
+                {
+                    board[i, j].Left = Ct.LeftMargin + j * (Ct.CellSize + Ct.CellGap);
+                    board[i, j].Top = Ct.TopMargin + i * (Ct.CellSize + Ct.CellGap);
+                    board[i, j].Height = Ct.CellSize;
+                    board[i, j].Width = Ct.CellSize;
+                    board[i, j].Font = new System.Drawing.Font("Microsoft Sans Serif", (Ct.CellSize) / 2,
+               System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                }
+            }
         }
     }
 }
