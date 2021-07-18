@@ -4,7 +4,7 @@ namespace TicTacToe
 {
     public class TicTacToeGame
     {
-        int[,] board = new int[Ct.BoardSize, Ct.BoardSize];
+        public int[,] board = new int[Ct.BoardSize, Ct.BoardSize];
         int currentPlayer;
 
         public void Start()
@@ -13,14 +13,22 @@ namespace TicTacToe
             currentPlayer = Ct.FirstPlayer;
         }
 
+        public string GetPlayerText(int player)
+        {
+            if (player == Ct.FirstPlayer) return Ct.FirstPlayerText;
+            if (player == Ct.SecondPlayer) return Ct.SecondPlayerText;
+            return Ct.FreeCellText;
+        }
+
+
         public int Play(int x, int y)
         {
             Move(x, y);
-            ConsoleShow();
+            //           ConsoleShow();
             return GetWinner(x, y);
         }
 
-        private bool WeHaveAWinner(int x, int y)
+        public bool WeHaveAWinner(int x, int y)
         {
 
             if (board[x, 0] == board[x, 1] && board[x, 1] == board[x, 2]) return true;
@@ -82,6 +90,11 @@ namespace TicTacToe
                     board[i, j] = Ct.FreeCell;
                 }
             }
+        }
+
+        internal void Reset()
+        {
+            throw new NotImplementedException();
         }
     }
 }

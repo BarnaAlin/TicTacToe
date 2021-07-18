@@ -58,9 +58,33 @@ namespace TicTacToe
 
         private void ClickOnCell(object sender, MouseEventArgs e)
         {
-
             (int x, int y) positionInBoard = GetPosition((Label)sender);
             game.Play(positionInBoard.x, positionInBoard.y);
+
+            ChangeCell(positionInBoard.x, positionInBoard.y);
+
+            if (game.WeHaveAWinner(positionInBoard.x, positionInBoard.y))
+            {
+                MessageBox.Show("We have a winner");
+                game.Start();
+                ResetBoard();
+            }
+        }
+
+        private void ResetBoard()
+        {
+            for (int i = 0; i < Ct.BoardSize; i++)
+            {
+                for (int j = 0; j < Ct.BoardSize; j++)
+                {
+                    ChangeCell(i, j);
+                }
+            }
+        }
+
+        private void ChangeCell(int x, int y)
+        {
+            board[x, y].Text = game.GetPlayerText(game.board[x, y]);
         }
 
         private (int x, int y) GetPosition(Label currentCell)
@@ -76,6 +100,12 @@ namespace TicTacToe
                 }
             }
             return (-1, -1);
+        }
+
+        private void resetGameButton_Click(object sender, EventArgs e)
+        {
+            game.Start();
+            ResetBoard();
         }
     }
 }
