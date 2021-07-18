@@ -17,43 +17,43 @@ namespace TicTacToe
         public mainForm()
         {
             InitializeComponent();
-            game = new TicTacToeGame();
         }
 
-        private void startButton_Click(object sender, EventArgs e)
-        {
-            game.Start();
-        }
         private void mainForm_Load(object sender, EventArgs e)
         {
             game = new TicTacToeGame();
-            InitBoard();
+            game.Start();
+            InitBoard(gamePanel);
         }
 
-        private void InitBoard()
+        private void InitBoard(ScrollableControl t)
         {
             for (int i = 0; i < Ct.BoardSize; i++)
             {
                 for (int j = 0; j < Ct.BoardSize; j++)
                 {
                     board[i, j] = new Label();
-
-                    board[i, j].Left = Ct.LeftMargin + j * (Ct.CellSize + Ct.CellGap);
-                    board[i, j].Top = Ct.TopMargin + i * (Ct.CellSize + Ct.CellGap);
-                    board[i, j].Height = Ct.CellSize;
-                    board[i, j].Width = Ct.CellSize;
-
-                    board[i, j].Font = new System.Drawing.Font("Microsoft Sans Serif", (Ct.CellSize - 10) / 2,
-                        System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                    board[i, j].TextAlign = ContentAlignment.MiddleCenter;
-                    board[i, j].BackColor = Ct.CellColor;
-                    board[i, j].Text = Ct.FreeCellText;
-
+                    SetCellProperties(i, j);
                     board[i, j].MouseClick += ClickOnCell;
 
-                    Controls.Add(board[i, j]);
+                    t.Controls.Add(board[i, j]);
+
                 }
             }
+        }
+
+        private void SetCellProperties(int i, int j)
+        {
+            board[i, j].Left = Ct.LeftMargin + j * (Ct.CellSize + Ct.CellGap);
+            board[i, j].Top = Ct.TopMargin + i * (Ct.CellSize + Ct.CellGap);
+            board[i, j].Height = Ct.CellSize;
+            board[i, j].Width = Ct.CellSize;
+
+            board[i, j].Font = new System.Drawing.Font("Microsoft Sans Serif", (Ct.CellSize - 10) / 2,
+                System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            board[i, j].TextAlign = ContentAlignment.MiddleCenter;
+            board[i, j].BackColor = Ct.CellColor;
+            board[i, j].Text = Ct.FreeCellText;
         }
 
         private void ClickOnCell(object sender, MouseEventArgs e)
