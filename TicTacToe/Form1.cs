@@ -38,8 +38,8 @@ namespace TicTacToe
                 {
                     board[i, j] = new Label();
 
-                    board[i, j].Left = Ct.LeftMargin + i * (Ct.CellSize + Ct.CellGap);
-                    board[i, j].Top = Ct.TopMargin + j * (Ct.CellSize + Ct.CellGap);
+                    board[i, j].Left = Ct.LeftMargin + j * (Ct.CellSize + Ct.CellGap);
+                    board[i, j].Top = Ct.TopMargin + i * (Ct.CellSize + Ct.CellGap);
                     board[i, j].Height = Ct.CellSize;
                     board[i, j].Width = Ct.CellSize;
 
@@ -58,8 +58,24 @@ namespace TicTacToe
 
         private void ClickOnCell(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
-                ((Label)sender).BackColor = Color.Red;
+
+            (int x, int y) positionInBoard = GetPosition((Label)sender);
+            game.Play(positionInBoard.x, positionInBoard.y);
+        }
+
+        private (int x, int y) GetPosition(Label currentCell)
+        {
+            for (int i = 0; i < Ct.BoardSize; i++)
+            {
+                for (int j = 0; j < Ct.BoardSize; j++)
+                {
+                    if (board[i, j] == currentCell)
+                    {
+                        return (i, j);
+                    }
+                }
+            }
+            return (-1, -1);
         }
     }
 }
